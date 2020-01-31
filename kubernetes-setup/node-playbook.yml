@@ -35,16 +35,9 @@
       - docker-ce
       - docker-ce-cli
       - containerd.io
-    #notify:
-    #  - docker_status
 
   - name: enable docker service
     service: name=docker enabled=true state=started
-
-#  handlers:
-#    - name: docker_status
-#      service: name=docker state=restarted
-#      listen: "docker_status"
 
   - name: Add vagrant user to docker group
     user:
@@ -96,7 +89,6 @@
       name: kubelet
       daemon_reload: yes
       state: restarted
-
 
   - name: Copy the join command to server location
     copy: src=join-command dest=/tmp/join-command.sh mode=0777

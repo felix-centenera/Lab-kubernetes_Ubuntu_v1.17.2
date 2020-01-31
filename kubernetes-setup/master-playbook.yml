@@ -35,16 +35,9 @@
       - docker-ce
       - docker-ce-cli
       - containerd.io
-#    notify:
-#      - docker_status
 
   - name: enable docker service
     service: name=docker enabled=true state=started
-
-#    handlers:
-#      - name: docker_status
-#        service: name=docker state=restarted
-#        listen: "docker_status"
 
   - name: Add vagrant user to docker group
     user:
@@ -85,11 +78,6 @@
         - kubeadm
         - kubectl
 
-#  - name: Ansible create file if it doesn't exist example
-#    file:
-#      path: "/etc/default/kubelet"
-#      state: touch
-
   - name: Configure node ip
     lineinfile:
       path: /etc/default/kubelet
@@ -111,11 +99,6 @@
      - mkdir -p /home/vagrant/.kube
      - cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
      - chown vagrant:vagrant /home/vagrant/.kube/config
-
-#  - name: Install calico pod network
-#    become: false
-#    command: kubectl create -f https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
-
 
 
   - name: Install calico pod network
