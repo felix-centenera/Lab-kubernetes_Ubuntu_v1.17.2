@@ -61,7 +61,7 @@ vagrant ssh k8s-master
 
 Start using Kubernetes
 -----------------------------------------
-
+```
 kubectl get nodes
 
 NAME         STATUS   ROLES    AGE     VERSION
@@ -71,9 +71,9 @@ k8s-master   Ready    master   5m43s   v1.17.2
 node-1       Ready    <none>   3m2s    v1.17.2
 
 node-2       Ready    <none>   33s     v1.17.2
+```
 
-
-
+```
 kubectl get namespaces
 
 NAME              STATUS   AGE
@@ -85,10 +85,10 @@ kube-node-lease   Active   5m53s
 kube-public       Active   5m53s
 
 kube-system       Active   5m53s
+```
 
 
-
-
+```
 kubectl get pods -n kube-system
 
 NAME                                       READY   STATUS    RESTARTS   AGE
@@ -100,7 +100,6 @@ calico-node-9cbps                          1/1     Running   0          5m40s
 calico-node-fjn4p                          1/1     Running   0          50s
 
 calico-node-nlzph                          1/1     Running   0          3m19s
-
 
 coredns-6955765f44-nctjs                   1/1     Running   0          5m40s
 
@@ -119,7 +118,7 @@ kube-proxy-rvf7n                           1/1     Running   0          5m40s
 kube-proxy-xs4ms                           1/1     Running   0          3m19s
 
 kube-scheduler-k8s-master                  1/1     Running   0          5m53s
-
+```
 
 
 Sources:
