@@ -1,0 +1,4 @@
+handlers:
+  - name: docker_status
+    service: name=docker state=restarted
+    listen: "docker_status"
