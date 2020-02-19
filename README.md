@@ -120,6 +120,93 @@ kube-proxy-xs4ms                           1/1     Running   0          3m19s
 kube-scheduler-k8s-master                  1/1     Running   0          5m53s
 ```
 
+Deploy NFS Storage
+-----------------------------------------
+
+Create a directory for nfs in the master vm:
+```
+cd /home/vagrant/storageDeploy
+sudo mkdir -p /storage/dynamic
+sudo chmod -R 777 /storage/dynamic
+```
+
+Label the node and delete NoSchedule label from master:
+```
+kubectl label nodes node-1  role=master
+kubectl taint node k8s-master  node-role.kubernetes.io/master:NoSchedule-
+```
+
+Create the service:
+```
+k create -f nfs-deployment-icpservice.yaml
+...
+...
+...
+service/nfs-provisioner created
+```
+
+Create the DeploymentConfig:
+
+```
+k create -f nfs-deployment-icp.yaml
+deployment.apps/nfs-provisioner created
+```
+
+Create the Service Account and associate a clusterrolebinding:
+```
+kubectl create serviceaccount nfs-provisioner-admin-sa
+kubectl create clusterrolebinding nfs-provisioner-admin-sa  --clusterrole=cluster-admin --serviceaccount=default:nfs-provisioner-admin-sa
+```
+
+Add the serviceAccount to the DC
+```
+k edit deployment nfs-provisioner
+
+spec:
+  template:
+    # Below is the podSpec.
+    metadata:
+      name: ...
+    spec:
+      serviceAccountName: nfs-provisioner-admin-sa
+```
+
+Create the STORAGECLASS:
+```
+k create -f nfs-class.yaml
+...
+...
+...
+storageclass.storage.k8s.io/nfs-dynamic created
+```
+
+Patch the storageclass as the default storageclass:
+
+*kubectl patch storageclass <your-class-name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'*
+
+```
+kubectl patch storageclass nfs-dynamic -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+...
+...
+...
+storageclass.storage.k8s.io/nfs-dynamic patched
+```
+
+Create pvc to test StorageClass:
+```
+k create -f nfs-test-claim.yaml
+...
+...
+...
+persistentvolumeclaim/nfs created
+```
+
+Check that the pvc is bounded:
+```
+k get pvc
+NAME   STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+nfs    Bound    pvc-57289cf4-bc7d-4699-9ca0-70c3140c4d5e   1Mi        RWX            nfs-dynamic    3s
+```
 
 Sources:
 -----------------------------------------
