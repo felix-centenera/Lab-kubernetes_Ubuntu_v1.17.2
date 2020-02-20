@@ -4,7 +4,7 @@ Deploy Kubernetes 1.17.2 & bento/ubuntu-16.04  & VirtualBox & Vagrant & Ansible
 Description
 --------------------------------
 This document describe the process to install Kubernetes 1.17.2  in VirtualBox. Vagrant generate the VMs and resources for us. Ansible will install Kubernetes 1.17.2.
-This is a modification of https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant(Author: Naresh L J (Infosys))
+This is a modification of https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant (Author: Naresh L J (Infosys))
 
 
 Requirements
